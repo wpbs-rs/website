@@ -1,4 +1,12 @@
+import type { Route } from "./+types/home";
 import { Button } from "~/components/ui/button"
+
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "WBSP-rs" },
+    { name: "description", content: "A WASM based plugin service." },
+  ];
+}
 
 export default function Home() {
   return (
