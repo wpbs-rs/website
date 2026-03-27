@@ -45,17 +45,15 @@ export default function Home() {
         <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 pt-24 pb-20 md:pt-32">
           <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="order-1 space-y-6 lg:order-0">
-              <div className="flex items-center justify-between lg:block">
-                <h1 className="text-4xl leading-tight font-semibold tracking-tight text-balance sm:text-5xl">
-                  wbps
-                </h1>
-              </div>
-              <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
+              <h1 className="text-center text-4xl leading-tight font-semibold tracking-tight text-balance sm:text-5xl lg:text-left">
+                wbps
+              </h1>
+              <p className="text-center text-muted-foreground sm:text-lg lg:max-w-2xl lg:text-left">
                 A free and open-source WASM based plugin service for bots, webhooks, and
                 automations.
               </p>
 
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
                 <Button size="lg">Get started</Button>
                 <Link
                   to="https://discord.gg/3bgCdYRupn"
