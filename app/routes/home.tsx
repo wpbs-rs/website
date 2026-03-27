@@ -1,4 +1,5 @@
-import { Cpu, Server, Sparkles } from "lucide-react";
+import { SiDiscord, SiGithub } from "@icons-pack/react-simple-icons";
+import { Cpu, Server, Sparkles, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router";
 import BrandIcon from "~/components/BrandIcon";
 import Footer from "~/components/Footer";
@@ -56,6 +57,18 @@ export default function Home() {
               <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
                 <Button size="lg">Get started</Button>
                 <Link
+                  to="https://github.com/wbps-rs"
+                  target="_blank"
+                  className={buttonVariants({
+                    variant: "outline",
+                    size: "lg",
+                  })}
+                >
+                  <SiGithub />
+                  GitHub
+                  <ArrowUpRight />
+                </Link>
+                <Link
                   to="https://discord.gg/3bgCdYRupn"
                   target="_blank"
                   className={buttonVariants({
@@ -63,7 +76,9 @@ export default function Home() {
                     size: "lg",
                   })}
                 >
+                  <SiDiscord />
                   Discord Server
+                  <ArrowUpRight />
                 </Link>
               </div>
             </div>
