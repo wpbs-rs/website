@@ -11,9 +11,7 @@ function NavBar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav
-      className={cn("relative flex items-center justify-between p-4", open ? "bg-background" : "")}
-    >
+    <nav className="sticky top-0 z-50 flex items-center justify-between border-b bg-background p-4">
       <Link
         to="/"
         className={buttonVariants({
