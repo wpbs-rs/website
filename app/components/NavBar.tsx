@@ -1,5 +1,5 @@
 import { SiDiscord, SiGithub } from "@icons-pack/react-simple-icons";
-import { ArrowUpRight, Book, Menu, X } from "lucide-react";
+import { ArrowUpRight, Book, Menu, X, LayoutDashboard } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
 import BrandIcon from "~/components/BrandIcon";
@@ -46,6 +46,21 @@ function NavBar() {
               : "pointer-events-none -translate-y-12 opacity-0",
           )}
         >
+          <Link
+            to="/dashboard"
+            target="_blank"
+            className={buttonVariants({
+              variant: "ghost",
+              size: "lg",
+              className: "w-full justify-start md:w-auto md:justify-center",
+            })}
+          >
+            <span className="flex items-center gap-2">
+              <LayoutDashboard />
+              Dashboard
+            </span>
+          </Link>
+
           <Link
             to="/docs"
             target="_blank"
