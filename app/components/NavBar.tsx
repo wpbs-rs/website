@@ -11,17 +11,22 @@ function NavBar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-10 flex items-center justify-between border-b bg-background p-4">
+    <nav
+      className={cn(
+        "sticky top-0 z-10 flex items-center justify-between border-b bg-background/90 p-4 backdrop-blur-sm",
+        open ? "bg-background" : "bg-background/70",
+      )}
+    >
       <Link
         to="/"
         className={buttonVariants({
-          variant: "link",
+          variant: "ghost",
           size: "lg",
           className: "z-20",
         })}
       >
-        <BrandIcon className="rounded-lg" />
-        wbps
+        <BrandIcon className="size-8 rounded-lg" />
+        <p className="text-lg md:text-xl">wbps</p>
       </Link>
 
       <Button
