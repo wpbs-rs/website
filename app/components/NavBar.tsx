@@ -1,12 +1,11 @@
 import { SiDiscord, SiGithub } from "@icons-pack/react-simple-icons";
 import { ArrowUpRight, Book, Menu, X, LayoutDashboard } from "lucide-react";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
+import BrandIcon from "~/components/BrandIcon";
 import { Button, buttonVariants } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import { cn } from "~/lib/utils";
-
-const BrandIcon = lazy(() => import("~/components/BrandIcon"));
 
 function NavBar() {
   const [open, setOpen] = useState(false);
@@ -48,9 +47,7 @@ function NavBar() {
           to="/"
           className="inline-flex h-10 shrink-0 items-center justify-center gap-1 px-2.5 text-lg md:text-xl"
         >
-          <Suspense fallback={<div className="size-10" />}>
-            <BrandIcon className="size-10" />
-          </Suspense>
+          <BrandIcon className="size-10" />
           wbps
         </Link>
 
