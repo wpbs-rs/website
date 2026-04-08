@@ -1,6 +1,6 @@
 import { Book, Server, SquarePen, Puzzle, Webhook } from "lucide-react";
+import { lazy, Suspense } from "react";
 import { Link } from "react-router";
-import BrandIcon from "~/components/BrandIcon";
 import {
   Accordion,
   AccordionContent,
@@ -21,6 +21,8 @@ export function meta(_: Route.MetaArgs) {
     },
   ];
 }
+
+const BrandIcon = lazy(() => import("~/components/BrandIcon"));
 
 export default function Home() {
   return (
@@ -55,10 +57,12 @@ export default function Home() {
 
           <div className="relative order-0 flex items-center justify-center lg:order-1">
             <div className="absolute inset-0 transform-gpu rounded-full bg-primary/10 blur-[100px]" />
-            <BrandIcon
-              className="relative h-auto w-2/3 max-w-sm md:w-1/2 lg:w-full"
-              animate={true}
-            />
+            <Suspense fallback={<div className="h-auto w-2/3 max-w-sm md:w-1/2 lg:w-full" />}>
+              <BrandIcon
+                className="relative h-auto w-2/3 max-w-sm md:w-1/2 lg:w-full"
+                animate={true}
+              />
+            </Suspense>
           </div>
         </div>
       </section>
