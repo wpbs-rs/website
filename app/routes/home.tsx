@@ -25,7 +25,7 @@ export function meta(_: Route.MetaArgs) {
 
 export default function Home() {
   return (
-    <main className="py-12">
+    <main className="py-8">
       {/* HERO SECTION */}
       <section className="container mx-auto flex flex-col gap-8 px-6 pb-20">
         <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
