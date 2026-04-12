@@ -42,6 +42,20 @@ export default function Home() {
             to={`/blog/${slug}`}
             className="group border-border hover:border-foreground flex flex-col border-l-2 py-5 pl-4 transition-colors"
           >
+            {frontmatter.heroImage && (
+              <figure className="mb-4">
+                <img
+                  src={frontmatter.heroImage}
+                  alt={frontmatter.heroImageAlt ?? frontmatter.title}
+                  className="max-h-72 rounded-md"
+                />
+                {frontmatter.heroImageAlt && (
+                  <figcaption className="text-muted-foreground mt-1 text-xs">
+                    {frontmatter.heroImageAlt}
+                  </figcaption>
+                )}
+              </figure>
+            )}
             <div className="flex min-w-0 flex-col gap-1">
               <p className="text-2xl leading-snug font-medium">{frontmatter.title}</p>
               <div className="flex flex-wrap items-center gap-2 text-sm">

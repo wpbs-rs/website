@@ -32,6 +32,9 @@ export function meta({ loaderData }: Route.MetaArgs) {
     { property: "og:title", content: `wpbs | ${loaderData.frontmatter.title}` },
     { property: "og:description", content: loaderData.frontmatter.description },
     { property: "og:type", content: "article" },
+    ...(loaderData.frontmatter.heroImage
+      ? [{ property: "og:image", content: loaderData.frontmatter.heroImage }]
+      : []),
   ];
 }
 
@@ -56,6 +59,18 @@ export default function Post() {
               </div>
             </div>
             <Separator className="mt-8" />
+            {frontmatter.heroImage && (
+              <figure>
+                <img
+                  src={frontmatter.heroImage}
+                  alt={frontmatter.heroImageAlt ?? frontmatter.title}
+                  className="max-h-100"
+                />
+                {frontmatter.heroImageAlt && (
+                  <figcaption className="mt-2">{frontmatter.heroImageAlt}</figcaption>
+                )}
+              </figure>
+            )}
             <Component />
           </article>
         </div>
