@@ -6,10 +6,12 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import { defineConfig } from "vite";
 
+import remarkSynopsis from "./plugins/remark-synopsis";
+
 export default defineConfig({
   plugins: [
     mdx({
-      remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
+      remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter, remarkSynopsis],
       rehypePlugins: [rehypePrettyCode],
     }),
     tailwindcss(),

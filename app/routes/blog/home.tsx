@@ -1,18 +1,11 @@
 import { Calendar, UserPen } from "lucide-react";
-import { useLoaderData } from "react-router";
 import { Link } from "react-router";
 
 import { Badge } from "~/components/ui/badge";
 import formatDate from "~/lib/format-date";
-import { getPosts } from "~/lib/mdx";
+import { posts } from "~/lib/posts";
 
 import type { Route } from "./+types/home";
-
-export async function loader() {
-  const posts = await getPosts();
-
-  return { posts };
-}
 
 export function meta(_: Route.MetaArgs) {
   return [
@@ -23,13 +16,12 @@ export function meta(_: Route.MetaArgs) {
     },
     { property: "og:title", content: `wpbs | Blog` },
     { property: "og:description", content: "The wpbs Blog" },
-    { property: "og:type", content: "article" },
+    { property: "og:type", content: "website" },
     { property: "og:image", content: "/favicon/web-app-manifest-512x512.png" },
   ];
 }
 
 export default function Home() {
-  const { posts } = useLoaderData<typeof loader>();
   return (
     <main className="container mx-auto w-full px-6 py-8">
       <header className="mb-8 w-full">
