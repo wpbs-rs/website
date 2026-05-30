@@ -1,4 +1,4 @@
-import { Calendar, UserPen } from "lucide-react";
+import { ArrowRight, Calendar, User } from "lucide-react";
 import { Link } from "react-router";
 
 import { Badge } from "~/components/ui/badge";
@@ -24,7 +24,7 @@ export function meta(_: Route.MetaArgs) {
 export default function Home() {
   return (
     <main className="container mx-auto w-full px-6 py-8">
-      <header className="mb-8 w-full">
+      <header className="border-border mb-2 w-full">
         <h1 className="mb-2 text-3xl font-bold tracking-tight">Blog</h1>
         <p className="text-muted-foreground">News and write-ups from the wpbs team.</p>
       </header>
@@ -33,36 +33,34 @@ export default function Home() {
           <Link
             key={slug}
             to={`/blog/${slug}`}
-            className="group border-border hover:border-foreground flex flex-col border-l-2 py-5 pl-4 transition-colors"
+            className="group hover:bg-muted/30 -mx-4 flex flex-col gap-6 px-4 py-10 transition-colors sm:flex-row sm:items-stretch sm:gap-10"
           >
-            {frontmatter.heroImage && (
-              <figure className="mb-4">
-                <img
-                  src={frontmatter.heroImage}
-                  alt={frontmatter.heroImageAlt ?? frontmatter.title}
-                  className="max-h-72 rounded-md"
-                />
-                {frontmatter.heroImageAlt && (
-                  <figcaption className="text-muted-foreground mt-1 text-xs">
-                    {frontmatter.heroImageAlt}
-                  </figcaption>
+            <div className="flex min-w-0 flex-1 flex-col justify-between">
+              <div>
+                <h2 className="text-lg font-semibold tracking-tight sm:text-xl">
+                  <span className="bg-linear-to-r from-current to-current bg-size-[0%_1px] bg-bottom-left bg-no-repeat pb-1 transition-[background-size] duration-300 group-hover:bg-size-[100%_1px]">
+                    {frontmatter.title}
+                  </span>
+                  <ArrowRight className="text-muted-foreground ml-1 inline-block size-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100" />
+                </h2>
+                <div className="text-muted-foreground mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+                  <span className="inline-flex items-center gap-1.5">
+                    <User className="size-3.5" />
+                    {frontmatter.author}
+                  </span>
+                  <time className="inline-flex items-center gap-1.5">
+                    <Calendar className="size-3.5" />
+                    {formatDate.format(frontmatter.published)}
+                  </time>
+                </div>
+                {synopsis && (
+                  <p className="text-muted-foreground mt-4 line-clamp-2 max-w-2xl leading-relaxed">
+                    {synopsis}
+                  </p>
                 )}
-              </figure>
-            )}
-            <div className="flex min-w-0 flex-col gap-1">
-              <p className="text-2xl leading-snug font-medium">{frontmatter.title}</p>
-              <div className="flex flex-wrap items-center gap-2 text-sm">
-                <div className="flex items-center gap-1">
-                  <Calendar className="size-4" />
-                  <time>{formatDate.format(frontmatter.published)}</time>
-                </div>
-                <div className="flex items-center gap-1">
-                  <UserPen className="size-4" />
-                  <span>{frontmatter.author}</span>
-                </div>
               </div>
               {frontmatter.tags.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
+                <div className="mt-4 flex flex-wrap gap-1.5">
                   {frontmatter.tags.map((tag) => (
                     <Badge key={tag} variant="outline">
                       {tag}
@@ -70,8 +68,16 @@ export default function Home() {
                   ))}
                 </div>
               )}
-              <p className="text-md text-muted-foreground mt-1 line-clamp-3">{synopsis}</p>
             </div>
+            {frontmatter.heroImage && (
+              <div className="bg-muted order-first aspect-4/3 w-full shrink-0 self-center overflow-hidden rounded-md sm:order-0 sm:w-80">
+                <img
+                  src={frontmatter.heroImage}
+                  alt={frontmatter.heroImageAlt ?? frontmatter.title}
+                  className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+            )}
           </Link>
         ))}
       </div>
