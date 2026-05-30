@@ -1,10 +1,11 @@
-import { Calendar, UserPen } from "lucide-react";
-import { useParams } from "react-router";
+import { ArrowLeft, ArrowRight, Calendar, ChevronLeft, UserPen } from "lucide-react";
+import { Link, useParams } from "react-router";
 
 import { Badge } from "~/components/ui/badge";
+import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import formatDate from "~/lib/format-date";
-import { getPost } from "~/lib/posts";
+import { getAdjacentPosts, getPost } from "~/lib/posts";
 
 import type { Route } from "./+types/$slug";
 
@@ -38,10 +39,22 @@ export default function Post() {
   }
 
   const { Component, frontmatter } = post;
+  const { newer, older } = getAdjacentPosts(post.slug);
 
   return (
     <main className="py-8">
       <div className="container mx-auto w-full">
+        <div className="mb-6 px-6">
+          <Button
+            render={<Link to="/blog" />}
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground -ml-2.5"
+          >
+            <ChevronLeft />
+            All posts
+          </Button>
+        </div>
         <article className="prose dark:prose-invert max-w-none px-6">
           <h1 className="mb-0">{frontmatter.title}</h1>
           <div className="mt-4 flex flex-wrap items-center gap-4 text-sm">
@@ -78,6 +91,36 @@ export default function Post() {
           )}
           <Component />
         </article>
+        {(newer || older) && (
+          <nav className="mt-12 grid grid-cols-1 gap-4 px-6 sm:grid-cols-2">
+            {older ? (
+              <Link
+                to={`/blog/${older.slug}`}
+                className="group border-border hover:border-foreground flex flex-col rounded-md border p-4 transition-colors"
+              >
+                <span className="text-muted-foreground flex items-center gap-1 text-sm">
+                  <ArrowLeft className="size-4" />
+                  Older post
+                </span>
+                <span className="mt-1 font-medium">{older.frontmatter.title}</span>
+              </Link>
+            ) : (
+              <div className="hidden sm:block" />
+            )}
+            {newer && (
+              <Link
+                to={`/blog/${newer.slug}`}
+                className="group border-border hover:border-foreground flex flex-col rounded-md border p-4 text-right transition-colors"
+              >
+                <span className="text-muted-foreground flex items-center justify-end gap-1 text-sm">
+                  Newer post
+                  <ArrowRight className="size-4" />
+                </span>
+                <span className="mt-1 font-medium">{newer.frontmatter.title}</span>
+              </Link>
+            )}
+          </nav>
+        )}
       </div>
     </main>
   );

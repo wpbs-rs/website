@@ -55,3 +55,15 @@ export const posts: Post[] = [...bySlug.values()].sort(
 export function getPost(slug: string): Post | undefined {
   return bySlug.get(slug);
 }
+
+// `posts` is sorted newest-first, so the newer post sits at the lower index.
+export function getAdjacentPosts(slug: string): { newer?: Post; older?: Post } {
+  const index = posts.findIndex((post) => post.slug === slug);
+  if (index === -1) {
+    return {};
+  }
+  return {
+    newer: posts[index - 1],
+    older: posts[index + 1],
+  };
+}
