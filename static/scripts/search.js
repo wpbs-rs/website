@@ -102,7 +102,7 @@ const showResults = async () => {
     const query = searchInput.value.trim();
     activeResult = -1;
     if (!query) {
-        searchResults.replaceChildren(message("Type to search the docs."));
+        searchResults.replaceChildren(message("Type to search."));
         return;
     }
     const index = await loadIndex();

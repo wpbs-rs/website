@@ -24,5 +24,25 @@
         </a>
         {%- endfor %}
     </section>
+    {%- set blog = get_section(path="blog/_index.md") %}
+    {%- if blog.pages %}
+    <section class="latest-posts">
+        <div class="latest-posts-header">
+            <h2>Latest Posts</h2>
+            <a href="{{ blog.permalink }}">All posts →</a>
+        </div>
+        <div class="features">
+            {%- for p in blog.pages %}{% if loop.index <= 3 %}
+            <a class="feature" href="{{ p.permalink }}">
+                <time datetime="{{ p.date }}">{{ p.date | date(format="%B %-d, %Y") }}</time>
+                <h3>{{ p.title }}</h3>
+                {%- if p.description %}
+                <p>{{ p.description }}</p>
+                {%- endif %}
+            </a>
+            {%- endif %}{% endfor %}
+        </div>
+    </section>
+    {%- endif %}
 </main>
 {% endblock body %}
