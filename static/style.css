@@ -218,6 +218,24 @@ td {
     gap: 0.25rem;
 }
 
+.nav-link {
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 0.93rem;
+    font-weight: 500;
+}
+
+.nav-link:hover,
+.nav-link[aria-current] {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.nav-link[aria-current] {
+    background: var(--bg-soft);
+}
+
 .nav-divider {
     width: 1px;
     height: 1.25rem;
@@ -636,7 +654,8 @@ body.search-open {
     color: var(--accent);
 }
 
-.feature h2 {
+.feature h2,
+.feature h3 {
     margin: 0.5rem 0 0.25rem;
     font-size: 1.05rem;
 }
@@ -644,6 +663,107 @@ body.search-open {
 .feature p {
     margin: 0;
     color: var(--muted);
+}
+
+.latest-posts {
+    margin-top: 4rem;
+}
+
+.latest-posts-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.latest-posts-header h2 {
+    margin: 0;
+    font-size: 1.35rem;
+}
+
+.feature time {
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.post-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.post-card {
+    display: grid;
+    grid-template-columns: 40% minmax(0, 1fr);
+    padding: 0;
+    overflow: hidden;
+}
+
+.post-card-text {
+    align-self: center;
+    padding: 1.25rem;
+}
+
+.post-card-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-right: 1px solid var(--border);
+    background: var(--border);
+}
+
+/* Blog */
+
+.blog {
+    width: 100%;
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 3rem;
+}
+
+/* Same width as the landing page, so the cards line up. */
+.blog-index {
+    max-width: 62rem;
+}
+
+.feed-link,
+.back-link {
+    font-size: 0.93rem;
+}
+
+.blog .post-list {
+    margin-top: 2rem;
+}
+
+.post-empty {
+    color: var(--muted);
+}
+
+.post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0.5rem 0 2rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.post-meta > * {
+    white-space: nowrap;
+}
+
+.post-meta > span::before {
+    content: "·";
+    margin: 0 0.5rem;
+}
+
+.post-hero {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: -1rem 0 2rem;
+    border-radius: 10px;
 }
 
 /* Docs */
@@ -713,23 +833,27 @@ body.search-open {
     padding: 2rem 2.5rem 3rem;
 }
 
-.content h1 {
+.content h1,
+.blog h1 {
     margin-top: 0;
     font-size: 2rem;
     line-height: 1.25;
 }
 
-.content h2 {
+.content h2,
+.post h2 {
     margin-top: 2.25rem;
     font-size: 1.35rem;
 }
 
-.content h3 {
+.content h3,
+.post h3 {
     margin-top: 1.75rem;
     font-size: 1.1rem;
 }
 
-.content h4 {
+.content h4,
+.post h4 {
     margin-top: 1.5rem;
     font-size: 1rem;
 }
@@ -855,6 +979,18 @@ blockquote p {
 }
 
 @media (max-width: 32rem) {
+    .site-header {
+        padding: 0 0.75rem;
+    }
+
+    .nav-link {
+        padding: 0.3rem 0.4rem;
+    }
+
+    .site-nav .nav-divider {
+        margin: 0 0.1rem;
+    }
+
     .search-button {
         justify-content: center;
         width: 2.2rem;
@@ -864,6 +1000,12 @@ blockquote p {
 
     .search-button > span,
     .search-button kbd {
+        display: none;
+    }
+}
+
+@media (max-width: 22rem) {
+    .site-nav .nav-divider {
         display: none;
     }
 }
@@ -916,7 +1058,20 @@ blockquote p {
         display: block;
     }
 
-    .content {
+    .content,
+    .blog {
         padding: 1.5rem 1.25rem 3rem;
+    }
+}
+
+@media (max-width: 36rem) {
+    .post-card {
+        grid-template-columns: 1fr;
+    }
+
+    .post-card-image {
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
     }
 }

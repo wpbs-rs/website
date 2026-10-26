@@ -24,5 +24,19 @@
         </a>
         {%- endfor %}
     </section>
+    {%- set blog = get_section(path="blog/_index.md") %}
+    {%- if blog.pages %}
+    <section class="latest-posts">
+        <div class="latest-posts-header">
+            <h2>Latest Blog Posts</h2>
+            <a href="{{ blog.permalink }}">All posts →</a>
+        </div>
+        <div class="post-list">
+            {%- for p in blog.pages %}{% if loop.index <= 3 %}
+            {{<post.card path={p.relative_path} level={3} />}}
+            {%- endif %}{% endfor %}
+        </div>
+    </section>
+    {%- endif %}
 </main>
 {% endblock body %}

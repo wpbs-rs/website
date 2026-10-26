@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} · {{ config.title }}{% endblock title %}
+
+{% block head %}
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ page.title }}">
+    {%- if page.description %}
+    <meta property="og:description" content="{{ page.description }}">
+    {%- endif %}
+    <meta property="og:url" content="{{ page.permalink }}">
+    <meta property="og:image" content="{{<post.image_url path={page.relative_path} />}}">
+    {%- if page.extra.image_alt %}
+    <meta property="og:image:alt" content="{{ page.extra.image_alt }}">
+    {%- endif %}
+    <meta name="twitter:card" content="summary_large_image">
+{%- endblock head %}
+
+{% block body %}
+{%- set blog = get_section(path="blog/_index.md", metadata_only=true) %}
+<main class="blog">
+    <article class="post">
+        <header>
+            <h1>{{ page.title }}</h1>
+            <p class="post-meta">
+                {{<post.date date={page.date} />}}
+                {%- if page.updated %}<span>Updated {{<post.date date={page.updated} />}}</span>{% endif %}
+                {%- if page.authors %}<span>{{ page.authors | join(sep=", ") }}</span>{% endif %}<span>{{ page.reading_time }} min read</span>
+            </p>
+            {{<post.image path={page.relative_path} class={"post-hero"} lazy={false} />}}
+        </header>
+        {{ page.content | safe }}
+    </article>
+    {%- if page.higher or page.lower %}
+    <nav class="pager">
+        {#- In a date-sorted section, lower is the newer post and higher the older one. #}
+        <span>{% if page.lower %}<a href="{{ page.lower.permalink }}">← {{ page.lower.title }}</a>{% endif %}</span>
+        <span>{% if page.higher %}<a href="{{ page.higher.permalink }}">{{ page.higher.title }} →</a>{% endif %}</span>
+    </nav>
+    {%- endif %}
+    <p class="back-link"><a href="{{ blog.permalink }}">← All posts</a></p>
+</main>
+{% endblock body %}
