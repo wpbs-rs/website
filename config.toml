@@ -1,6 +1,7 @@
 base_url = "https://wpbs.celarye.dev"
 title = "wpbs"
 description = "WebAssembly plugin based services"
+author = "The wpbs Project"
 compile_sass = false
 build_search_index = true
 
