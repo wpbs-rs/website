@@ -6,3 +6,5 @@ command = "bash ./build.sh"
 
 [assets]
 directory = "./public"
+
+[previews]
