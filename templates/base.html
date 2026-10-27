@@ -43,6 +43,16 @@
     <script type="module" src="{{ get_url(path='scripts/menu.js') }}"></script>
 </head>
 <body>
+    {%- set home = get_section(path="_index.md") %}
+    {%- set announcement = home.extra.announcement | default(value=false) %}
+    {%- if announcement and announcement.enabled %}
+    <div class="announcement" role="region" aria-label="Announcement">
+        <span>{{ announcement.text }}</span>
+        {%- if announcement.link %}
+        <a href="{% if announcement.link is starting_with(pat="@/") %}{{ get_url(path=announcement.link) }}{% else %}{{ announcement.link }}{% endif %}">{{ announcement.link_text | default(value="Learn more") }} →</a>
+        {%- endif %}
+    </div>
+    {%- endif %}
     <header class="site-header">
         <a class="logo" href="{{ get_url(path='/') }}">
             <img src="{{ get_url(path='favicon.svg') }}" alt="" width="24" height="24">wpbs

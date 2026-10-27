@@ -167,6 +167,25 @@ td {
 
 /* Header and footer */
 
+.announcement {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem 0.75rem;
+    padding: 0.45rem 1.25rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 25%, var(--border));
+    background: color-mix(in srgb, var(--accent) 10%, var(--bg));
+    color: var(--text);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.announcement a {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
 .site-header {
     position: sticky;
     top: 0;
