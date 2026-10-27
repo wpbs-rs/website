@@ -12,6 +12,7 @@
     <meta name="description" content="{{ config.description }}">
     {%- endif %}
     <link rel="icon" href="{{ get_url(path='favicon.svg') }}" type="image/svg+xml">
+    <link rel="alternate" type="application/atom+xml" title="{{ config.title }} blog" href="{{ get_url(path='blog/atom.xml', trailing_slash=false) }}">
     <link rel="stylesheet" href="{{ get_url(path='style.css') }}">
     <link rel="stylesheet" href="{{ get_url(path='giallo-light.css') }}">
     <link rel="stylesheet" href="{{ get_url(path='giallo-dark.css') }}" media="(prefers-color-scheme: dark)" id="code-dark">
@@ -42,11 +43,25 @@
     <script type="module" src="{{ get_url(path='scripts/menu.js') }}"></script>
 </head>
 <body>
+    {%- set home = get_section(path="_index.md") %}
+    {%- set announcement = home.extra.announcement | default(value=false) %}
+    {%- if announcement and announcement.enabled %}
+    <div class="announcement" role="region" aria-label="Announcement">
+        <span>{{ announcement.text }}</span>
+        {%- if announcement.link %}
+        <a href="{% if announcement.link is starting_with(pat="@/") %}{{ get_url(path=announcement.link) }}{% else %}{{ announcement.link }}{% endif %}">{{ announcement.link_text | default(value="Learn more") }} →</a>
+        {%- endif %}
+    </div>
+    {%- endif %}
     <header class="site-header">
         <a class="logo" href="{{ get_url(path='/') }}">
             <img src="{{ get_url(path='favicon.svg') }}" alt="" width="24" height="24">wpbs
         </a>
         <nav class="site-nav">
+            {%- set path = current_path | default(value="") %}
+            <a class="nav-link" href="{{ get_url(path='@/docs/_index.md') }}"{% if "/docs/" in path %} aria-current="page"{% endif %}>Docs</a>
+            <a class="nav-link" href="{{ get_url(path='@/blog/_index.md') }}"{% if "/blog/" in path %} aria-current="page"{% endif %}>Blog</a>
+            <span class="nav-divider" aria-hidden="true"></span>
             <button class="search-button" type="button" aria-label="Search" aria-haspopup="dialog">
                 {{<icon.search />}}<span>Search</span><kbd><span class="key-ctrl">Ctrl</span><span class="key-cmd">{{<icon.command />}}</span> K</kbd>
             </button>
@@ -58,10 +73,10 @@
     </header>
     <div class="search-modal" data-index="{{ get_url(path='search_index.en.js') }}" hidden>
         <div class="search-backdrop"></div>
-        <div class="search-panel" role="dialog" aria-modal="true" aria-label="Search the docs">
+        <div class="search-panel" role="dialog" aria-modal="true" aria-label="Search">
             <div class="search-field">
                 {{<icon.search />}}
-                <input class="search-input" type="text" placeholder="Search the docs" aria-label="Search the docs" autocomplete="off" spellcheck="false">
+                <input class="search-input" type="text" placeholder="Search" aria-label="Search" autocomplete="off" spellcheck="false">
                 <button class="search-close" type="button" aria-label="Close search"><kbd>Esc</kbd></button>
             </div>
             <ul class="search-results"></ul>

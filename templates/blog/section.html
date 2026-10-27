@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}{{ section.title }} · {{ config.title }}{% endblock title %}
+
+{% block body %}
+<main class="blog">
+    <h1>{{ section.title }}</h1>
+    {{ section.content | safe }}
+    <p class="feed-link"><a href="{{ get_url(path='blog/atom.xml', trailing_slash=false) }}">Subscribe (Atom)</a></p>
+    {%- if paginator.pages %}
+    <ol class="post-list">
+        {%- for p in paginator.pages %}
+        <li>
+            <time datetime="{{ p.date }}">{{ p.date | date(format="%B %-d, %Y") }}</time>
+            <h2><a href="{{ p.permalink }}">{{ p.title }}</a></h2>
+            {%- if p.description %}
+            <p>{{ p.description }}</p>
+            {%- elif p.summary %}
+            {{ p.summary | safe }}
+            {%- endif %}
+        </li>
+        {%- endfor %}
+    </ol>
+    {%- else %}
+    <p class="post-empty">No posts yet.</p>
+    {%- endif %}
+    {%- if paginator.number_pagers > 1 %}
+    <nav class="pager">
+        <span>{% if paginator.previous %}<a href="{{ paginator.previous }}">← Newer posts</a>{% endif %}</span>
+        <span>{% if paginator.next %}<a href="{{ paginator.next }}">Older posts →</a>{% endif %}</span>
+    </nav>
+    {%- endif %}
+</main>
+{% endblock body %}
