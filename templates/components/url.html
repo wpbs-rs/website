@@ -1,0 +1,4 @@
+{#- A full URL as-is; anything else (`@/` content path or site path) via `get_url`. -#}
+{% component url.resolve(link: string) %}
+{%- if ":" in link %}{{ link }}{% else %}{{ get_url(path=link) }}{% endif -%}
+{% endcomponent url.resolve %}
