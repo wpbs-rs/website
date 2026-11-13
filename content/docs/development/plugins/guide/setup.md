@@ -21,13 +21,12 @@ and keep Cargo's build output out of it:
 
 ## Toolchain
 
-Plugins need Rust 1.100.0 or later, currently in beta, with the `wasm32-wasip3`
-target. Pin both in `rust-toolchain.toml`, and rustup installs them on first
-use:
+Plugins need Rust 1.100.0 or later, with the `wasm32-wasip3` target. Pin both in
+`rust-toolchain.toml`, and rustup installs them on first use:
 
 ```toml,name=rust-toolchain.toml
 [toolchain]
-channel = "beta"
+channel = "stable"
 targets = ["wasm32-wasip3"]
 ```
 
@@ -75,14 +74,18 @@ generate them with the submodule's script:
 
 {% <tabs> %}
 {% <tab title="macOS/Linux"> %}
+
 ```sh
 ./wit/gen-deps.sh
 ```
+
 {% </tab> %}
 {% <tab title="Windows"> %}
+
 ```powershell
 .\wit\gen-deps.ps1
 ```
+
 {% </tab> %}
 {% </tabs> %}
 
