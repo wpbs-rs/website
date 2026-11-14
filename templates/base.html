@@ -1,3 +1,8 @@
+{%- set home = get_section(path="_index.md") -%}
+{%- set announcement = home.extra.announcement | default(value=false) -%}
+{%- if announcement and announcement.enabled and not announcement.id -%}
+{{ throw(message="the announcement in `content/_index.md` is missing an `id`") }}
+{%- endif -%}
 <!doctype html>
 <html lang="en">
 <head>
@@ -31,6 +36,13 @@
             }
         }
         try { applyTheme(localStorage.getItem("theme")); } catch (_) {}
+        {%- if announcement and announcement.enabled %}
+        try {
+            if (localStorage.getItem("announcement-bar-hidden") === {{ announcement.id | json_encode | safe }}) {
+                document.documentElement.classList.add("announcement-hidden");
+            }
+        } catch (_) {}
+        {%- endif %}
         document.documentElement.classList.add("js");
         if (/Mac|iPhone|iPad/.test(navigator.platform)) {
             document.documentElement.classList.add("apple");
@@ -42,39 +54,42 @@
     <script type="module" src="{{ get_url(path='scripts/collapsible.js') }}"></script>
     <script type="module" src="{{ get_url(path='scripts/search.js') }}"></script>
     <script type="module" src="{{ get_url(path='scripts/menu.js') }}"></script>
+    <script type="module" src="{{ get_url(path='scripts/announcement.js') }}"></script>
 </head>
 <body>
-    {%- set home = get_section(path="_index.md") %}
-    {%- set announcement = home.extra.announcement | default(value=false) %}
-    {%- if announcement and announcement.enabled %}
-    <div class="announcement" role="region" aria-label="Announcement">
-        <span>{{ announcement.text }}</span>
-        {%- if announcement.link %}
-        <a href="{{<url.resolve link={announcement.link} />}}">{{ announcement.link_text | default(value="Learn more") }} →</a>
+    {#- The announcement and header stick to the top together. #}
+    <div class="site-top">
+        {%- if announcement and announcement.enabled %}
+        <div class="announcement" role="region" aria-label="Announcement" data-id="{{ announcement.id }}">
+            <span>{{ announcement.text }}</span>
+            {%- if announcement.link %}
+            <a href="{{<url.resolve link={announcement.link} />}}">{{ announcement.link_text | default(value="Learn more") }} →</a>
+            {%- endif %}
+            <button class="announcement-close" type="button" aria-label="Dismiss announcement">{{<icon.close />}}</button>
+        </div>
         {%- endif %}
+        <header class="site-header">
+            <a class="logo" href="{{ get_url(path='/') }}">
+                <img src="{{ get_url(path='favicon.svg') }}" alt="" width="24" height="24">wpbs
+            </a>
+            <button class="search-button header-search" type="button" aria-label="Search" aria-haspopup="dialog">{{<icon.search />}}</button>
+            <span class="nav-divider header-divider" aria-hidden="true"></span>
+            <button class="button secondary icon-button nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">{{<icon.menu />}}{{<icon.close />}}</button>
+            <nav class="site-nav" id="site-nav">
+                {%- set path = current_path | default(value="") %}
+                <a class="nav-link" href="{{ get_url(path='@/docs/_index.md') }}"{% if "/docs/" in path %} aria-current="page"{% endif %}>Docs</a>
+                <a class="nav-link" href="{{ get_url(path='@/blog/_index.md') }}"{% if "/blog/" in path %} aria-current="page"{% endif %}>Blog</a>
+                <span class="nav-divider" aria-hidden="true"></span>
+                <button class="search-button" type="button" aria-label="Search" aria-haspopup="dialog">
+                    {{<icon.search />}}<span>Search</span><kbd><span class="key-ctrl">Ctrl</span><span class="key-cmd">{{<icon.command />}}</span> K</kbd>
+                </button>
+                <span class="nav-divider" aria-hidden="true"></span>
+                <button class="button secondary icon-button theme-toggle" type="button" aria-label="Toggle dark mode">{{<icon.theme name="sun" />}}{{<icon.theme name="moon" />}}</button>
+                <span class="nav-divider" aria-hidden="true"></span>
+                <a class="button secondary icon-button" href="https://github.com/wpbs-rs/wpbs" aria-label="GitHub">{{<icon.github />}}</a>
+            </nav>
+        </header>
     </div>
-    {%- endif %}
-    <header class="site-header">
-        <a class="logo" href="{{ get_url(path='/') }}">
-            <img src="{{ get_url(path='favicon.svg') }}" alt="" width="24" height="24">wpbs
-        </a>
-        <button class="search-button header-search" type="button" aria-label="Search" aria-haspopup="dialog">{{<icon.search />}}</button>
-        <span class="nav-divider header-divider" aria-hidden="true"></span>
-        <button class="button secondary icon-button nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">{{<icon.menu name={"open"} />}}{{<icon.menu name={"close"} />}}</button>
-        <nav class="site-nav" id="site-nav">
-            {%- set path = current_path | default(value="") %}
-            <a class="nav-link" href="{{ get_url(path='@/docs/_index.md') }}"{% if "/docs/" in path %} aria-current="page"{% endif %}>Docs</a>
-            <a class="nav-link" href="{{ get_url(path='@/blog/_index.md') }}"{% if "/blog/" in path %} aria-current="page"{% endif %}>Blog</a>
-            <span class="nav-divider" aria-hidden="true"></span>
-            <button class="search-button" type="button" aria-label="Search" aria-haspopup="dialog">
-                {{<icon.search />}}<span>Search</span><kbd><span class="key-ctrl">Ctrl</span><span class="key-cmd">{{<icon.command />}}</span> K</kbd>
-            </button>
-            <span class="nav-divider" aria-hidden="true"></span>
-            <button class="button secondary icon-button theme-toggle" type="button" aria-label="Toggle dark mode">{{<icon.theme name="sun" />}}{{<icon.theme name="moon" />}}</button>
-            <span class="nav-divider" aria-hidden="true"></span>
-            <a class="button secondary icon-button" href="https://github.com/wpbs-rs/wpbs" aria-label="GitHub">{{<icon.github />}}</a>
-        </nav>
-    </header>
     <div class="search-modal" data-index="{{ get_url(path='search_index.en.js') }}" hidden>
         <div class="search-backdrop"></div>
         <div class="search-panel" role="dialog" aria-modal="true" aria-label="Search">

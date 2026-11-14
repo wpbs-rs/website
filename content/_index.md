@@ -2,7 +2,7 @@
 description = "Connect lightweight, sandboxed WebAssembly plugins to event-driven services, such as Discord or a scheduler."
 
 [extra]
-announcement = { enabled = false, text = "wpbs 0.1 has been released!", link = "@/docs/usage/quick-start.md", link_text = "Get started" }
+announcement = { enabled = false, id = "wpbs-0.1", text = "wpbs 0.1 has been released!", link = "@/docs/usage/quick-start.md", link_text = "Get started" }
 
 features = [
     { icon = "file", title = "Simple Configuration", text = "Describe the services and plugins of your project in a simple YAML file.", link = "@/docs/usage/configuration/_index.md" },
