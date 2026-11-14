@@ -1,5 +1,4 @@
 // The search dialog, opened with the search button or Ctrl/Cmd+K.
-const searchButton = document.querySelector(".search-button");
 const searchModal = document.querySelector(".search-modal");
 const searchInput = searchModal.querySelector(".search-input");
 const searchResults = searchModal.querySelector(".search-results");
@@ -157,7 +156,8 @@ const closeSearch = () => {
     returnFocus?.focus();
 };
 
-searchButton.addEventListener("click", openSearch);
+// The header has a second, icon-only search button for very small screens.
+document.querySelectorAll(".search-button").forEach((button) => button.addEventListener("click", openSearch));
 searchModal.querySelector(".search-backdrop").addEventListener("click", closeSearch);
 searchModal.querySelector(".search-close").addEventListener("click", closeSearch);
 searchInput.addEventListener("input", showResults);
