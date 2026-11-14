@@ -1,0 +1,37 @@
+{#- The absolute URL of a post's required `extra.image`: a full URL, a site
+    path such as `/images/cover.png`, or a file next to the post's `index.md`. -#}
+{% component post.image_url(path: string) %}
+{%- set p = get_page(path=path) -%}
+{%- if not p.extra.image -%}
+{{ throw(message="blog post `" ~ path ~ "` is missing `extra.image` in its front matter") }}
+{%- elif ":" in p.extra.image or p.extra.image is starting_with(pat="/") %}{{<url.resolve link={p.extra.image} />}}
+{%- else %}{{ p.permalink }}{{ p.extra.image }}{% endif -%}
+{% endcomponent post.image_url %}
+
+{% component post.date(date: string) %}
+<time datetime="{{ date }}">{{ date | date(format="%B %-d, %Y") }}</time>
+{%- endcomponent post.date %}
+
+{% component post.image(path: string, class: string, lazy: bool) %}
+{%- set p = get_page(path=path) %}
+<img class="{{ class }}" src="{{<post.image_url path={path} />}}" alt="{{ p.extra.image_alt | default(value='') }}"{% if lazy %} loading="lazy"{% endif %}>
+{% endcomponent post.image %}
+
+{#- A blog post listing card: image on the left, text on the right. -#}
+{% component post.card(path: string, level: number) %}
+{%- set p = get_page(path=path) %}
+<a class="feature post-card" href="{{ p.permalink }}">
+    {#- Decorative here; the title already names the link. #}
+    <img class="post-card-image" src="{{<post.image_url path={path} />}}" alt="" loading="lazy">
+    <div class="post-card-text">
+        {{<post.date date={p.date} />}}
+        <h{{ level }}>{{ p.title }}</h{{ level }}>
+        {%- if p.description %}
+        <p>{{ p.description }}</p>
+        {%- elif p.summary %}
+        {#- striptags: summary may contain links, which can't nest in <a> #}
+        <p>{{ p.summary | striptags | trim }}</p>
+        {%- endif %}
+    </div>
+</a>
+{% endcomponent post.card %}
