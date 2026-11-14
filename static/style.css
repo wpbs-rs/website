@@ -714,18 +714,8 @@ body.search-open {
 }
 
 .post-card-text {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
     align-self: center;
     padding: 1.25rem;
-}
-
-.post-card-text h2,
-.post-card-text h3 {
-    margin: 0;
-    font-size: 1.3rem;
-    line-height: 1.3;
 }
 
 .post-card-image {
@@ -1028,9 +1018,8 @@ blockquote p {
     }
 }
 
-/* Under 375px, the header links move into a menu below the header, and search
-   stays in the header. Without JavaScript the menu can't open, so the links
-   stay in the header. */
+/* Under 375px, the header links move into a menu below the header, apart from
+   search. Without JavaScript the menu can't open, so this needs .js. */
 @media (width < 23.4375rem) {
     .js .header-search {
         display: flex;

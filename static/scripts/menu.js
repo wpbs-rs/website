@@ -26,7 +26,7 @@ header.addEventListener("keydown", (event) => {
 });
 
 // Clicks in the search dialog don't count, so closing it can return focus to
-// the search button in the menu.
+// a link in the menu.
 document.addEventListener("click", (event) => {
     if (!header.contains(event.target) && !event.target.closest(".search-modal")) {
         setNavOpen(false);
