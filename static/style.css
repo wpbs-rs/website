@@ -631,6 +631,19 @@ body.search-open {
     padding: 0;
 }
 
+/* The header search and menu buttons, shown on very small screens. */
+.header-search,
+.header-divider,
+.nav-toggle,
+.nav-toggle[aria-expanded="true"] .open,
+.nav-toggle .close {
+    display: none;
+}
+
+.nav-toggle[aria-expanded="true"] .close {
+    display: block;
+}
+
 .features {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
@@ -1015,15 +1028,55 @@ blockquote p {
     }
 }
 
-@media (max-width: 22rem) {
-    .site-nav .nav-divider {
+/* Under 375px, the header links move into a menu below the header, and search
+   stays in the header. Without JavaScript the menu can't open, so the links
+   stay in the header. */
+@media (width < 23.4375rem) {
+    .js .header-search {
+        display: flex;
+        margin-left: auto;
+    }
+
+    /* Spaced like the dividers in the header links. */
+    .js .header-divider {
+        display: block;
+        margin: 0 0.35rem;
+    }
+
+    .js .nav-toggle {
+        display: inline-flex;
+    }
+
+    .js .site-nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: 0;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg);
+    }
+
+    .js .nav-open .site-nav {
+        display: flex;
+    }
+
+    .js .site-nav .nav-link {
+        flex-basis: 100%;
+        padding: 0.5rem 0.6rem;
+        font-size: 1rem;
+    }
+
+    .js .site-nav .nav-divider,
+    .js .site-nav .search-button {
         display: none;
     }
-}
 
-@media (max-width: 19.5rem) {
-    .logo span {
-        display: none;
+    .js .site-nav .theme-toggle {
+        margin-right: auto;
     }
 }
 
