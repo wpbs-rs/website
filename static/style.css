@@ -167,7 +167,15 @@ td {
 
 /* Header and footer */
 
+/* The announcement and header stick to the top together. */
+.site-top {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
 .announcement {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -186,10 +194,50 @@ td {
     white-space: nowrap;
 }
 
+.announcement-hidden .announcement {
+    display: none;
+}
+
+/* Dismissing needs JavaScript, so the button only shows with it. */
+.announcement-close {
+    display: none;
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    translate: 0 -50%;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background-color var(--transition), color var(--transition);
+}
+
+.announcement-close:hover {
+    background: color-mix(in srgb, var(--accent) 15%, var(--bg));
+    color: var(--text);
+}
+
+.announcement-close .icon {
+    width: 16px;
+    height: 16px;
+}
+
+.js .announcement {
+    padding-inline: 2.75rem;
+}
+
+.js .announcement-close {
+    display: flex;
+}
+
 .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -635,7 +683,7 @@ body.search-open {
 .header-search,
 .header-divider,
 .nav-toggle,
-.nav-toggle[aria-expanded="true"] .open,
+.nav-toggle[aria-expanded="true"] .menu,
 .nav-toggle .close {
     display: none;
 }
@@ -794,9 +842,9 @@ body.search-open {
 
 .sidebar {
     position: sticky;
-    top: 3.5rem;
+    top: var(--site-top-height, 3.5rem);
     align-self: start;
-    max-height: calc(100vh - 3.5rem);
+    max-height: calc(100vh - var(--site-top-height, 3.5rem));
     overflow-y: auto;
     padding: 1.5rem 0.75rem 2rem 1.25rem;
     border-right: 1px solid var(--border);
