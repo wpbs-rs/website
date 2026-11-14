@@ -55,8 +55,8 @@
     </div>
     {%- endif %}
     <header class="site-header">
-        <a class="logo" href="{{ get_url(path='/') }}">
-            <img src="{{ get_url(path='favicon.svg') }}" alt="" width="24" height="24">wpbs
+        <a class="logo" href="{{ get_url(path='/') }}" aria-label="wpbs">
+            <img src="{{ get_url(path='favicon.svg') }}" alt="" width="24" height="24"><span>wpbs</span>
         </a>
         <nav class="site-nav">
             {%- set path = current_path | default(value="") %}

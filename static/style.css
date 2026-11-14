@@ -633,7 +633,7 @@ body.search-open {
 
 .features {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
     gap: 1rem;
 }
 
@@ -1021,6 +1021,12 @@ blockquote p {
     }
 }
 
+@media (max-width: 19.5rem) {
+    .logo span {
+        display: none;
+    }
+}
+
 @media (max-width: 52rem) {
     .nav-divider {
         margin: 0 0.25rem;
@@ -1046,6 +1052,8 @@ blockquote p {
     .brand-icon {
         order: -1;
         justify-self: center;
+        max-width: 100%;
+        height: auto;
     }
 
     .docs {
