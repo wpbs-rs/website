@@ -7,7 +7,7 @@ if (menu) {
     });
 }
 
-// The header menu button, shown on very small screens.
+// The header menu button, shown on small screens.
 const header = document.querySelector(".site-header");
 const navToggle = header.querySelector(".nav-toggle");
 

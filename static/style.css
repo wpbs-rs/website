@@ -263,7 +263,7 @@ td {
 .site-nav {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.5rem;
 }
 
 .nav-link {
@@ -284,13 +284,7 @@ td {
     background: var(--bg-soft);
 }
 
-.nav-divider {
-    width: 1px;
-    height: 1.25rem;
-    margin: 0 0.5rem;
-    background: var(--border);
-}
-
+.github-link > span,
 .theme-toggle .moon {
     display: none;
 }
@@ -679,9 +673,8 @@ body.search-open {
     padding: 0;
 }
 
-/* The header search and menu buttons, shown on very small screens. */
+/* The header search and menu buttons, shown on small screens. */
 .header-search,
-.header-divider,
 .nav-toggle,
 .nav-toggle[aria-expanded="true"] .menu,
 .nav-toggle .close {
@@ -690,6 +683,12 @@ body.search-open {
 
 .nav-toggle[aria-expanded="true"] .close {
     display: block;
+}
+
+/* Search and the theme toggle need JavaScript. */
+html:not(.js) .search-button,
+html:not(.js) .theme-toggle {
+    display: none;
 }
 
 .features {
@@ -1040,44 +1039,12 @@ blockquote p {
     border-top: 1px solid var(--border);
 }
 
-@media (max-width: 36rem) {
-    .site-header {
-        padding: 0 0.75rem;
-    }
-
-    .nav-link {
-        padding: 0.3rem 0.4rem;
-    }
-
-    .site-nav .nav-divider {
-        margin: 0 0.1rem;
-    }
-
-    .search-button {
-        justify-content: center;
-        width: 2.2rem;
-        height: 2.2rem;
-        padding: 0;
-    }
-
-    .search-button > span,
-    .search-button kbd {
-        display: none;
-    }
-}
-
-/* Under 375px, the header links move into a menu below the header, apart from
+/* Under 640px, the header links move into a menu below the header, apart from
    search. Without JavaScript the menu can't open, so this needs .js. */
-@media (width < 23.4375rem) {
+@media (width < 40rem) {
     .js .header-search {
         display: flex;
-        margin-left: auto;
-    }
-
-    /* Spaced like the dividers in the header links. */
-    .js .header-divider {
-        display: block;
-        margin: 0 0.35rem;
+        margin: 0 0.5rem 0 auto;
     }
 
     .js .nav-toggle {
@@ -1092,7 +1059,7 @@ blockquote p {
         left: 0;
         flex-wrap: wrap;
         gap: 0.5rem;
-        padding: 0.75rem;
+        padding: 0.75rem 1.25rem;
         border-bottom: 1px solid var(--border);
         background: var(--bg);
     }
@@ -1107,21 +1074,52 @@ blockquote p {
         font-size: 1rem;
     }
 
-    .js .site-nav .nav-divider,
     .js .site-nav .search-button {
         display: none;
     }
 
-    .js .site-nav .theme-toggle {
-        margin-right: auto;
+    /* In the menu, GitHub is a link like the others, with its icon in front. It
+       fills the last row up to the theme toggle. */
+    .js .site-nav .github-link {
+        flex: 1;
+        justify-content: flex-start;
+        width: auto;
+        height: auto;
+        padding: 0.5rem 0.6rem;
+        border: none;
+        border-radius: 6px;
+        color: var(--muted);
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .js .site-nav .github-link:hover {
+        background: none;
+        color: var(--text);
+    }
+
+    .js .site-nav .github-link > span {
+        display: inline;
     }
 }
 
-@media (max-width: 52rem) {
-    .nav-divider {
-        margin: 0 0.25rem;
+/* Under 375px, the search buttons only show their icon. This is the one
+   breakpoint that isn't a Tailwind one, as `sm` is too wide for it. */
+@media (width < 23.4375rem) {
+    .search-button {
+        justify-content: center;
+        width: 2.2rem;
+        height: 2.2rem;
+        padding: 0;
     }
 
+    .search-button > span,
+    .search-button kbd {
+        display: none;
+    }
+}
+
+@media (width < 48rem) {
     .search-modal {
         padding-top: 1rem;
     }
@@ -1173,7 +1171,7 @@ blockquote p {
     }
 }
 
-@media (max-width: 36rem) {
+@media (width < 40rem) {
     .post-card {
         grid-template-columns: 1fr;
     }
