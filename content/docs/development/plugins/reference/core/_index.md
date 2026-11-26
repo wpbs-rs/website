@@ -3,7 +3,7 @@
 # Regenerate it with `python3 reference.py path/to/wit`, using the WIT files
 # from https://github.com/wpbs-rs/wit.
 title = "Core"
-description = "Persistent storage, logging, and host and plugin lifecycle operations."
+description = "Persistent storage, logging, and project and plugin lifecycle operations."
 weight = 1
 sort_by = "weight"
 
@@ -15,7 +15,7 @@ Package `wpbs:core`.
 
 ## World `core`
 
-Provides persistent storage, logging, and host and plugin lifecycle
+Provides persistent storage, logging, and project and plugin lifecycle
 operations.
 
 ```wit

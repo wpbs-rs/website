@@ -38,7 +38,7 @@ wit-bindgen.workspace = true
 
 ## Bindings
 
-Commands send interactions, which come through the `interactions` world.
+Commands send interactions, which come through the `interaction` world.
 Generate it in `mod discord`, inside `mod bindings`:
 
 ```rust,name=greeter/src/lib.rs,hl_lines=4-16
@@ -50,7 +50,7 @@ Generate it in `mod discord`, inside `mod bindings`:
 
             wit_bindgen::generate!({
                 path: "../wit/services/discord",
-                world: "interactions",
+                world: "interaction",
                 with: {
                     "wpbs:shared/shared-types@0.1.0": crate::bindings::core::wpbs::shared::shared_types,
                 },
@@ -64,7 +64,7 @@ Generate it in `mod discord`, inside `mod bindings`:
 
 Then update the imports in `discord.rs`:
 
-```rust,name=greeter/src/discord.rs,hl_lines=2-9 18-24
+```rust,name=greeter/src/discord.rs,hl_lines=2-9 20-26
 use twilight_http::{client::ClientBuilder, request::TryIntoRequest};
 use twilight_model::{
     application::{command::CommandType, interaction::Interaction},
@@ -77,17 +77,20 @@ use twilight_util::builder::{
 
 use crate::{
     Plugin, Settings,
-    bindings::discord::{
-        events::{
-            exports::wpbs_services::discord::event_handler,
-            wpbs_services::discord::subscriptions::{EventKind, EventSubscription},
-        },
-        interactions::{
-            exports::wpbs_services::discord::interaction_handler,
-            wpbs_services::discord::registrations::{ApplicationCommand, InteractionKind},
-        },
-        requests::wpbs_services::discord::client::{
-            Body, InteractionCallbackParams, RequestData, Route, request,
+    bindings::{
+        core::wpbs::shared::shared_types::HostError,
+        discord::{
+            events::{
+                exports::wpbs_services::discord::event_handler,
+                wpbs_services::discord::events::{EventKind, EventSubscription},
+            },
+            interactions::{
+                exports::wpbs_services::discord::interaction_handler,
+                wpbs_services::discord::interactions::{ApplicationCommand, InteractionKind},
+            },
+            requests::wpbs_services::discord::requests::{
+                Body, InteractionCallbackParams, RequestData, Route, request,
+            },
         },
     },
 };
@@ -111,9 +114,8 @@ async fn register_command() -> anyhow::Result<()> {
 }
 ```
 
-Unlike the subscription, the command stays registered with Discord when wpbs
-stops. Registering it on the next start has no effect, or updates it if its data
-changed.
+Unlike the subscription, a command can be registered again: on the next start
+it has no effect, or updates the command if its data changed.
 
 Call it from `register`:
 
@@ -156,8 +158,8 @@ async fn respond(interaction: &Interaction, response: &InteractionResponse) -> a
 Using the command sends the plugin an interaction, which needs no subscription.
 wpbs calls the `interactions` world's callback, `interaction`, with the kind and
 key of the command, so the plugin matches on those. The key stays the same even
-if wpbs renames the command, such as to `hello-1` when another command also uses
-the name `hello`.
+if wpbs renames the command, such as to `hello-2` when another command already
+uses the name `hello`.
 
 A handler, `on_hello`, replies to the command with the greeting:
 

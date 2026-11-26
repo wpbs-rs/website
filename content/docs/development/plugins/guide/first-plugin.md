@@ -74,8 +74,8 @@ use bindings::core::{
 mod bindings {
 ```
 
-Start with `initialization`, which runs when wpbs starts. Its argument holds the
-plugin's settings; the guide uses them later.
+Start with `initialization`, which runs when the plugin starts. Its argument
+holds the plugin's settings; the guide uses them later.
 
 ```rust,name=greeter/src/lib.rs
 impl Guest for Plugin {
@@ -87,7 +87,8 @@ impl Guest for Plugin {
 }
 ```
 
-The second callback, `shutdown`, runs when wpbs stops. Add it to the `impl`:
+The second callback, `shutdown`, runs when the plugin stops. Add it to the
+`impl`:
 
 ```rust,name=greeter/src/lib.rs,hl_lines=8-12
 impl Guest for Plugin {

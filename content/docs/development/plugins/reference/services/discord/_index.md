@@ -13,34 +13,34 @@ children_heading = "Interfaces"
 
 Package `wpbs-services:discord`.
 
-## World `events`
+## World `event`
 
 Provides Discord events.
 
 ```wit
-world events {
-    import subscriptions;
+world event {
+    import events;
     export event-handler;
 }
 ```
 
-## World `requests`
+## World `request`
 
 Provides Discord requests.
 
 ```wit
-world requests {
-    import client;
+world request {
+    import requests;
 }
 ```
 
-## World `interactions`
+## World `interaction`
 
 Provides Discord interactions.
 
 ```wit
-world interactions {
-    import registrations;
+world interaction {
+    import interactions;
     export interaction-handler;
 }
 ```

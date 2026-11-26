@@ -12,7 +12,7 @@ The Discord service connects wpbs to Discord. Set up an application and enable
 the service as described in
 [Services](@/docs/usage/configuration/services.md#discord), with these intents:
 
-```yaml,name=config.yaml,hl_lines=4-10
+```yaml,name=project.yaml,hl_lines=4-10
 services:
   scheduler:
     enabled: true
@@ -27,8 +27,8 @@ services:
 
 ## Module
 
-The Discord package has a world for each of its features: `events`, `requests`,
-`interactions`, and `voice`. greeter generates the bindings of each world it
+The Discord package has a world for each of its features: `event`, `request`,
+`interaction`, and `voice`. greeter generates the bindings of each world it
 uses on the page that first needs it, under a `discord` module in
 `mod bindings`.
 

@@ -3,11 +3,11 @@
 # Regenerate it with `python3 reference.py path/to/wit`, using the WIT files
 # from https://github.com/wpbs-rs/wit.
 title = "Interactions"
-description = "The registrations and interaction-handler interfaces."
+description = "The interactions and interaction-handler interfaces."
 weight = 2
 +++
 
-## Interface `registrations`
+## Interface `interactions`
 
 Provides handles for application commands, message components, and modals.
 
@@ -24,9 +24,7 @@ independent of the command's Discord name and ID.
 Constructing a handle does not register the command. Dropping a handle
 does not deregister the command.
 
-A registered command stays registered when wpbs stops. If it is not
-registered again during the next successful initialization, wpbs
-deregisters it.
+A registered command lasts until it is deregistered.
 
 Interactions with the command invoke the exported `interaction` callback
 with this key.
@@ -36,7 +34,7 @@ with this key.
 Creates a handle to the command identified by the provided key.
 
 ```wit
-interface registrations {
+interface interactions {
     resource application-command {
         constructor(key: string);
     }
@@ -50,7 +48,7 @@ Registers a command with Discord.
 The command is global, or limited to the guild identified by the
 provided ID. The data is a Discord application command object.
 
-If other commands use the same name, all of them get a numeric
+If another command already uses the name, the command gets a numeric
 suffix. The `name` method returns the resulting name.
 
 Registering a registered command updates it to the provided guild
@@ -63,7 +61,7 @@ Returns an error if:
 - The command data is rejected by Discord (`other`).
 
 ```wit
-interface registrations {
+interface interactions {
     resource application-command {
         register: async func(
             guild-id: option<snowflake>,
@@ -89,7 +87,7 @@ Returns an error if:
 - The command is not registered (`not-found`).
 
 ```wit
-interface registrations {
+interface interactions {
     resource application-command {
         update: async func(data: json) -> result<_, host-error>;
     }
@@ -106,7 +104,7 @@ name.
 Returns an error if the command is not registered (`not-found`).
 
 ```wit
-interface registrations {
+interface interactions {
     resource application-command {
         name: async func() -> result<string, host-error>;
     }
@@ -120,7 +118,7 @@ Deregisters a command from Discord.
 Returns an error if the command is not registered (`not-found`).
 
 ```wit
-interface registrations {
+interface interactions {
     resource application-command {
         deregister: async func() -> result<_, host-error>;
     }
@@ -140,17 +138,16 @@ does not deregister the component.
 Interactions with components using the component's custom ID invoke the
 exported `interaction` callback with this key.
 
-A registered component stays registered when wpbs stops, so interactions
-with messages sent before a restart still invoke the exported
-`interaction` callback. If it is not registered again during the next
-successful initialization, wpbs deregisters it.
+A registered component lasts until it is deregistered, so interactions
+with previously sent messages still invoke the exported `interaction`
+callback.
 
 #### Constructor
 
 Creates a handle to the component identified by the provided key.
 
 ```wit
-interface registrations {
+interface interactions {
     resource message-component {
         constructor(key: string);
     }
@@ -165,7 +162,7 @@ Registering a registered component has no effect and keeps its
 custom ID.
 
 ```wit
-interface registrations {
+interface interactions {
     resource message-component {
         register: async func() -> result<_, host-error>;
     }
@@ -185,7 +182,7 @@ A component preserves its old custom ID if this method fails.
 Returns an error if the component is not registered (`not-found`).
 
 ```wit
-interface registrations {
+interface interactions {
     resource message-component {
         update: async func() -> result<_, host-error>;
     }
@@ -199,7 +196,7 @@ Returns the component's custom ID.
 Returns an error if the component is not registered (`not-found`).
 
 ```wit
-interface registrations {
+interface interactions {
     resource message-component {
         custom-id: async func() -> result<string, host-error>;
     }
@@ -216,7 +213,7 @@ callback.
 Returns an error if the component is not registered (`not-found`).
 
 ```wit
-interface registrations {
+interface interactions {
     resource message-component {
         deregister: async func() -> result<_, host-error>;
     }
@@ -236,17 +233,16 @@ does not deregister the modal.
 Submissions of modals using the modal's custom ID invoke the exported
 `interaction` callback with this key.
 
-A registered modal stays registered when wpbs stops, so submissions of
-modals shown before a restart still invoke the exported `interaction`
-callback. If it is not registered again during the next successful
-initialization, wpbs deregisters it.
+A registered modal lasts until it is deregistered, so submissions of
+previously shown modals still invoke the exported `interaction`
+callback.
 
 #### Constructor
 
 Creates a handle to the modal identified by the provided key.
 
 ```wit
-interface registrations {
+interface interactions {
     resource modal {
         constructor(key: string);
     }
@@ -261,7 +257,7 @@ Registering a registered modal has no effect and keeps its custom
 ID.
 
 ```wit
-interface registrations {
+interface interactions {
     resource modal {
         register: async func() -> result<_, host-error>;
     }
@@ -280,7 +276,7 @@ A modal preserves its old custom ID if this method fails.
 Returns an error if the modal is not registered (`not-found`).
 
 ```wit
-interface registrations {
+interface interactions {
     resource modal {
         update: async func() -> result<_, host-error>;
     }
@@ -294,7 +290,7 @@ Returns the modal's custom ID.
 Returns an error if the modal is not registered (`not-found`).
 
 ```wit
-interface registrations {
+interface interactions {
     resource modal {
         custom-id: async func() -> result<string, host-error>;
     }
@@ -311,7 +307,7 @@ callback.
 Returns an error if the modal is not registered (`not-found`).
 
 ```wit
-interface registrations {
+interface interactions {
     resource modal {
         deregister: async func() -> result<_, host-error>;
     }
@@ -323,7 +319,7 @@ interface registrations {
 A kind of Discord interaction.
 
 ```wit
-interface registrations {
+interface interactions {
     enum interaction-kind {
         application-command,
         message-component,
