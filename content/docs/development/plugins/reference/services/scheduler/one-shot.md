@@ -22,7 +22,7 @@ Handles with the same key refer to the same one-shot.
 
 Constructing a handle does not register the one-shot to a time. Dropping
 a handle does not deregister the one-shot from its time. A registered
-one-shot lasts until it is executed or wpbs stops.
+one-shot lasts until it is executed or deregistered.
 
 The scheduled execution invokes the exported `one-shot` callback with
 this key. The one-shot is deregistered once it has been executed.
@@ -110,7 +110,7 @@ Provides the callback that executes one-shots.
 
 Executes the one-shot identified by the provided key.
 
-Called when the one-shot's time is reached.
+Called once the one-shot's time is reached.
 
 ```wit
 interface one-shot-handler {

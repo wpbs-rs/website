@@ -3,11 +3,11 @@
 # Regenerate it with `python3 reference.py path/to/wit`, using the WIT files
 # from https://github.com/wpbs-rs/wit.
 title = "Events"
-description = "The subscriptions and event-handler interfaces."
+description = "The events and event-handler interfaces."
 weight = 1
 +++
 
-## Interface `subscriptions`
+## Interface `events`
 
 Provides subscriptions to Discord events.
 
@@ -22,7 +22,7 @@ All handles refer to the same subscription.
 
 Constructing a handle does not register the subscription. Dropping a
 handle does not deregister the subscription. A registered subscription
-lasts until wpbs stops.
+lasts until it is deregistered.
 
 Events of subscribed kinds invoke the exported `event` callback.
 
@@ -31,7 +31,7 @@ Events of subscribed kinds invoke the exported `event` callback.
 Creates a handle to the event subscription.
 
 ```wit
-interface subscriptions {
+interface events {
     resource event-subscription {
         constructor();
     }
@@ -50,7 +50,7 @@ Returns an error if the subscription is already registered
 (`already-exists`).
 
 ```wit
-interface subscriptions {
+interface events {
     resource event-subscription {
         register: async func(kinds: list<event-kind>) -> result<_, host-error>;
     }
@@ -69,7 +69,7 @@ Returns an error if the subscription is not registered
 (`not-found`).
 
 ```wit
-interface subscriptions {
+interface events {
     resource event-subscription {
         update: async func(kinds: list<event-kind>) -> result<_, host-error>;
     }
@@ -84,7 +84,7 @@ Returns an error if the subscription is not registered
 (`not-found`).
 
 ```wit
-interface subscriptions {
+interface events {
     resource event-subscription {
         deregister: async func() -> result<_, host-error>;
     }
@@ -96,7 +96,7 @@ interface subscriptions {
 A kind of Discord event.
 
 ```wit
-interface subscriptions {
+interface events {
     enum event-kind {
         auto-moderation-action-execution,
         auto-moderation-rule-create,

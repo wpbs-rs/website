@@ -5,15 +5,17 @@ weight = 4
 +++
 
 Settings let users configure a plugin. Make the greeting a setting in
-`config.yaml`:
+`project.yaml`:
 
-```yaml,name=config.yaml,hl_lines=4-5
+```yaml,name=project.yaml,hl_lines=4-5
 plugins:
   greeter:
     plugin: local/greeter:0.1.0
     settings:
       greeting: Good morning!
 ```
+
+The daemon receives it with the next `wpbs update`.
 
 ## Parsing
 
@@ -79,7 +81,7 @@ greeting from the settings in place of the fixed one:
 
 Callbacks return their errors as strings, so `map_err` turns serde's error into
 one, such as its message for a missing field. Invalid settings now stop the
-plugin when wpbs starts.
+plugin when it starts.
 
 ## Storage
 

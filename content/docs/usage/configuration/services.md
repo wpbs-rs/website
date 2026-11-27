@@ -11,19 +11,21 @@ need settings and/or secrets.
 {% <collapsible title="Discord"> %}
 Connects to Discord. Create an application as described in Discord's
 [getting started guide](https://docs.discord.com/developers/quick-start/getting-started),
-and put its bot token in `.env`, in the directory wpbs runs from:
+and give the project its bot token, from the project's directory:
 
-```sh,name=.env
-DISCORD_BOT_TOKEN=your-token
+```sh
+wpbs secret set discord.bot-token
 ```
 
-wpbs does not start without the token while the service is enabled.
+The CLI asks for the token, or reads it from stdin. The daemon stores it
+encrypted, and never shows it again; run the command again to replace it. The
+project does not start without the token while the service is enabled.
 
 Enable the service with the
 [gateway intents](https://docs.discord.com/developers/events/gateway#gateway-intents)
 your plugins need. Their documentation lists them.
 
-```yaml,name=config.yaml
+```yaml,name=project.yaml
 services:
   discord:
     enabled: true
@@ -41,21 +43,23 @@ in Discord's developer portal.
 ### Interactions
 
 Commands, message components, and modals that plugins register stay registered
-while wpbs is stopped. Commands stay listed in Discord, and components and
-modals sent before a restart work again once wpbs runs. On start, wpbs removes
-the ones plugins no longer register, including those of removed or renamed
-plugin entries.
+until the plugin removes them, or its entry is removed or renamed. Commands stay
+listed in Discord while the project is stopped, and components and modals sent
+earlier work again once it runs.
 
-Commands that share a name get numbered names, such as `/hello-1` and
-`/hello-2`.
+A command whose name is already taken gets a number, such as `/hello-2` next to
+`/hello`. The first command keeps its name, and names never change afterwards.
 {% </collapsible> %}
 
 {% <collapsible title="Scheduler"> %}
-Runs plugin jobs on cron schedules. Schedules follow the system's time zone,
-which is UTC in the Docker image unless `TZ` is set, such as
-`TZ: Europe/Brussels`.
+Runs plugin jobs on cron schedules, and one-shots at a point in time. Crons and
+one-shots stay registered while the project is stopped: a cron skips the times
+it missed, and a one-shot that came due runs once the project runs again.
 
-```yaml,name=config.yaml
+Schedules follow the time zone of the daemon's system, which is UTC in the
+Docker image unless `TZ` is set.
+
+```yaml,name=project.yaml
 services:
   scheduler:
     enabled: true

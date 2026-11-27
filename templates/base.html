@@ -19,6 +19,7 @@
     {%- block head %}{% endblock head %}
     <link rel="icon" href="{{ get_url(path='favicon.svg') }}" type="image/svg+xml">
     <link rel="alternate" type="application/atom+xml" title="{{ config.title }} blog" href="{{ get_url(path='blog/atom.xml', trailing_slash=false) }}">
+    <link rel="stylesheet" href="{{ get_url(path='vendor/modern-normalize.css') }}">
     <link rel="stylesheet" href="{{ get_url(path='style.css') }}">
     <link rel="stylesheet" href="{{ get_url(path='giallo-light.css') }}">
     <link rel="stylesheet" href="{{ get_url(path='giallo-dark.css') }}" media="(prefers-color-scheme: dark)" id="code-dark">
@@ -72,21 +73,19 @@
             <a class="logo" href="{{ get_url(path='/') }}">
                 <img src="{{ get_url(path='favicon.svg') }}" alt="" width="24" height="24">wpbs
             </a>
-            <button class="search-button header-search" type="button" aria-label="Search" aria-haspopup="dialog">{{<icon.search />}}</button>
-            <span class="nav-divider header-divider" aria-hidden="true"></span>
+            <button class="search-button header-search" type="button" aria-label="Search" aria-haspopup="dialog">
+                {{<icon.search />}}<span>Search</span><kbd><span class="key-ctrl">Ctrl</span><span class="key-cmd">{{<icon.command />}}</span> K</kbd>
+            </button>
             <button class="button secondary icon-button nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">{{<icon.menu />}}{{<icon.close />}}</button>
             <nav class="site-nav" id="site-nav">
                 {%- set path = current_path | default(value="") %}
                 <a class="nav-link" href="{{ get_url(path='@/docs/_index.md') }}"{% if "/docs/" in path %} aria-current="page"{% endif %}>Docs</a>
                 <a class="nav-link" href="{{ get_url(path='@/blog/_index.md') }}"{% if "/blog/" in path %} aria-current="page"{% endif %}>Blog</a>
-                <span class="nav-divider" aria-hidden="true"></span>
                 <button class="search-button" type="button" aria-label="Search" aria-haspopup="dialog">
                     {{<icon.search />}}<span>Search</span><kbd><span class="key-ctrl">Ctrl</span><span class="key-cmd">{{<icon.command />}}</span> K</kbd>
                 </button>
-                <span class="nav-divider" aria-hidden="true"></span>
+                <a class="button secondary icon-button github-link" href="https://github.com/wpbs-rs/wpbs" aria-label="GitHub">{{<icon.github />}}<span>GitHub</span></a>
                 <button class="button secondary icon-button theme-toggle" type="button" aria-label="Toggle dark mode">{{<icon.theme name="sun" />}}{{<icon.theme name="moon" />}}</button>
-                <span class="nav-divider" aria-hidden="true"></span>
-                <a class="button secondary icon-button" href="https://github.com/wpbs-rs/wpbs" aria-label="GitHub">{{<icon.github />}}</a>
             </nav>
         </header>
     </div>

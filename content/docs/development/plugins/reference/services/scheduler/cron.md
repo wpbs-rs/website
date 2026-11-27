@@ -22,7 +22,7 @@ Handles with the same key refer to the same cron.
 
 Constructing a handle does not register the cron to a schedule. Dropping
 a handle does not deregister the cron from its schedule. A registered
-cron lasts until wpbs stops.
+cron lasts until it is deregistered.
 
 Scheduled executions invoke the exported `cron` callback with this key.
 
@@ -105,7 +105,7 @@ Provides the callback that executes crons.
 
 Executes the cron identified by the provided key.
 
-Called when the cron's schedule triggers.
+Called when the cron's schedule triggers. Missed triggers are skipped.
 
 ```wit
 interface cron-handler {

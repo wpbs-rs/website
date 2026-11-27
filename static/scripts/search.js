@@ -156,7 +156,7 @@ const closeSearch = () => {
     returnFocus?.focus();
 };
 
-// The header has a second, icon-only search button for very small screens.
+// The header has a second search button for small screens, outside the menu.
 document.querySelectorAll(".search-button").forEach((button) => button.addEventListener("click", openSearch));
 searchModal.querySelector(".search-backdrop").addEventListener("click", closeSearch);
 searchModal.querySelector(".search-close").addEventListener("click", closeSearch);

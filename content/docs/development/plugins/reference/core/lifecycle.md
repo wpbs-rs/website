@@ -9,11 +9,11 @@ weight = 1
 
 ## Interface `lifecycle`
 
-Provides host shutdown requests.
+Provides project shutdown requests.
 
 ### Function `shutdown`
 
-Requests graceful host shutdown or restart.
+Requests graceful project shutdown or restart.
 
 Success means the request is accepted.
 
@@ -28,7 +28,7 @@ interface lifecycle {
 
 ### Enum `shutdown-action`
 
-A host shutdown action.
+A project shutdown action.
 
 ```wit
 interface lifecycle {
@@ -47,7 +47,7 @@ Provides plugin initialization and cleanup callbacks.
 
 Initializes the plugin with the provided settings.
 
-Called once during startup.
+Called when the plugin starts.
 
 Memory does not persist between callbacks. Store settings and other
 state needed later in the key-value store.
@@ -62,7 +62,7 @@ interface lifecycle-handler {
 
 Performs final cleanup for the plugin.
 
-Called during graceful shutdown.
+Called when the plugin stops.
 
 ```wit
 interface lifecycle-handler {

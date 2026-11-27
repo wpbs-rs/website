@@ -5,9 +5,9 @@ weight = 1
 +++
 
 The scheduler runs crons on cron expressions, and one-shots at a point in time.
-greeter uses a cron. Enable the scheduler in `config.yaml`:
+greeter uses a cron. Enable the scheduler in `project.yaml`:
 
-```yaml,name=config.yaml
+```yaml,name=project.yaml
 services:
   scheduler:
     enabled: true
@@ -61,7 +61,10 @@ and start it with these imports:
 use crate::{
     Plugin, Settings,
     bindings::{
-        core::wpbs::core::logging::{LogLevel, log},
+        core::wpbs::{
+            core::logging::{LogLevel, log},
+            shared::shared_types::HostError,
+        },
         scheduler::cron::{
             exports::wpbs_services::scheduler::cron_handler::Guest,
             wpbs_services::scheduler::crons::Cron,
@@ -76,18 +79,25 @@ start with a seconds field; this one runs daily at 09:00, in the system's time
 zone:
 
 ```rust,name=greeter/src/scheduler.rs
+const MORNING: &str = "0 0 9 * * *";
+
 pub async fn register() -> anyhow::Result<()> {
-    Cron::new("morning")
-        .register("0 0 9 * * *".to_string())
-        .await?;
+    let cron = Cron::new("morning");
+
+    match cron.register(MORNING.to_string()).await {
+        Err(HostError::AlreadyExists) => cron.update(MORNING.to_string()).await?,
+        result => result?,
+    }
 
     Ok(())
 }
 ```
 
 The cron is a
-[registration](@/docs/development/plugins/concepts/registrations.md): it lasts
-until wpbs stops, so the plugin registers it again on every start.
+[registration](@/docs/development/plugins/concepts/registrations.md): wpbs keeps
+it until the plugin deregisters it. `initialization` runs each time the plugin
+starts, so from the second start on the cron already exists. `update` then sets
+its schedule, which also applies a changed expression after an update.
 
 Call `register` in `initialization`:
 

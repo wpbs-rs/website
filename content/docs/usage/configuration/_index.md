@@ -1,14 +1,17 @@
 +++
 title = "Configuration"
-description = "The project's config.yaml."
+description = "The project's project.yaml."
 weight = 3
 sort_by = "weight"
 +++
 
-`config.yaml` describes a project: its name, the services it enables, and the
-plugins it runs.
+`project.yaml` describes a project: its name, the services it enables, and the
+plugins it runs. Project commands, such as `wpbs new` and `wpbs update`, read
+it from the current directory (`-f` names another file) and send it to the
+daemon, which keeps the project. The file can live anywhere, such as in a Git
+repository.
 
-```yaml,name=config.yaml
+```yaml,name=project.yaml
 name: my-project
 
 services:
@@ -17,35 +20,34 @@ services:
 
 plugins:
   hello-world:
-    plugin: wpbs/hello-world:0.1.0
+    plugin: hello-world:0.1.0
 ```
 
-All three top-level keys are optional:
-
-- `name` names the project.
-
-  Without it, wpbs generates one on the first start and keeps using it. Plugin
-  data is kept per project, so a renamed project starts without it.
-
+- `name` names the project, and is required. It is how the daemon tells
+  projects apart. Plugin data is kept per project, so a renamed project starts
+  without it.
 - `services` enables the services plugins can use.
 - `plugins` lists the plugins to run.
+- `restricted` makes [permissions](@/docs/usage/configuration/permissions.md)
+  opt-in.
 
 ## Interpolation
 
-Values can refer to environment variables as `${NAME}`, such as those in `.env`.
-This keeps secrets out of `config.yaml`:
+Values can refer to environment variables of the shell running `wpbs` as
+`${NAME}`; the CLI fills them in before sending the file. This keeps values that
+differ per machine, or that should stay out of version control, out of
+`project.yaml`:
 
-```sh,name=.env
-HELLO_WORLD_SECRET_GREETING=Hello, secret world!
-```
-
-```yaml,name=config.yaml
+```yaml,name=project.yaml
 plugins:
   hello-world:
-    plugin: wpbs/hello-world:0.1.0
+    plugin: hello-world:0.1.0
     environment:
       SECRET_GREETING: ${HELLO_WORLD_SECRET_GREETING}
 ```
+
+Service secrets, such as a Discord bot token, are not part of the file; they
+are set with [`wpbs secret set`](@/docs/usage/configuration/services.md).
 
 ## Further Configuration
 

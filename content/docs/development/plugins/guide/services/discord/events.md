@@ -47,7 +47,7 @@ rustflags = ["--cfg", "tokio_unstable"]
 
 ## Bindings
 
-Receiving events needs the `events` world, and replying needs `requests`, which
+Receiving events needs the `event` world, and replying needs `request`, which
 only has functions to call. Generate both in `mod bindings`:
 
 ```rust,name=greeter/src/lib.rs,hl_lines=5-30
@@ -61,7 +61,7 @@ only has functions to call. Generate both in `mod bindings`:
 
             wit_bindgen::generate!({
                 path: "../wit/services/discord",
-                world: "events",
+                world: "event",
                 with: {
                     "wpbs:shared/shared-types@0.1.0": crate::bindings::core::wpbs::shared::shared_types,
                 },
@@ -73,7 +73,7 @@ only has functions to call. Generate both in `mod bindings`:
         pub mod requests {
             wit_bindgen::generate!({
                 path: "../wit/services/discord",
-                world: "requests",
+                world: "request",
                 with: {
                     "wpbs:shared/shared-types@0.1.0": crate::bindings::core::wpbs::shared::shared_types,
                 },
@@ -91,12 +91,17 @@ use twilight_model::gateway::payload::incoming::MessageCreate;
 
 use crate::{
     Plugin, Settings,
-    bindings::discord::{
-        events::{
-            exports::wpbs_services::discord::event_handler,
-            wpbs_services::discord::subscriptions::{EventKind, EventSubscription},
+    bindings::{
+        core::wpbs::shared::shared_types::HostError,
+        discord::{
+            events::{
+                exports::wpbs_services::discord::event_handler,
+                wpbs_services::discord::events::{EventKind, EventSubscription},
+            },
+            requests::wpbs_services::discord::requests::{
+                Body, RequestData, Route, request,
+            },
         },
-        requests::wpbs_services::discord::client::{Body, RequestData, Route, request},
     },
 };
 ```
@@ -104,14 +109,18 @@ use crate::{
 ## Subscribing
 
 A plugin only receives the event kinds it subscribes to. Like the cron, its
-subscription is a registration that lasts until wpbs stops, so it is registered
-on every start:
+subscription is a registration that wpbs keeps, so from the second start on it
+already exists and `update` sets its kinds instead:
 
 ```rust,name=greeter/src/discord.rs
 async fn subscribe() -> anyhow::Result<()> {
-    EventSubscription::new()
-        .register(vec![EventKind::MessageCreate])
-        .await?;
+    let subscription = EventSubscription::new();
+    let kinds = vec![EventKind::MessageCreate];
+
+    match subscription.register(kinds.clone()).await {
+        Err(HostError::AlreadyExists) => subscription.update(kinds).await?,
+        result => result?,
+    }
 
     Ok(())
 }
@@ -166,7 +175,7 @@ limiter.
 
 ## Handling Messages
 
-The `events` world's callback, `event`, receives the event's kind and its JSON
+The `event` world's callback, `event`, receives the event's kind and its JSON
 payload. Implement it to pass new messages on to `on_message`, and turn its
 error into a string:
 
@@ -186,6 +195,7 @@ The plugin only receives the event kinds it subscribed to, so any other kind is
 a bug.
 
 The trait is named through its module, `event_handler::Guest`, since the
-`interactions` world adds a second `Guest` to this file later.
+`interaction` world adds a second `Guest` to this file later.
 
-Rebuild and restart, then send `!hello` in a channel the bot can read.
+Rebuild and upload the plugin again, run `wpbs update`, then send `!hello` in a
+channel the bot can read.

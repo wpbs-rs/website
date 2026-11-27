@@ -21,7 +21,7 @@ plugin may do further.
 
 ## Lightweight
 
-wpbs is one small native binary that runs every plugin of a project. It only
+wpbs is one small native daemon that runs the plugins of every project. It only
 creates an instance of a plugin to handle an event, so plugins that are waiting
 use almost no resources. wpbs manages the services itself, so all plugins share
 them instead of each running their own.

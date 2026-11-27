@@ -23,20 +23,19 @@ use twilight_util::builder::{
 ```
 
 ```rust,name=greeter/src/discord.rs,hl_lines=3-5
-        interactions::{
-            exports::wpbs_services::discord::interaction_handler,
-            wpbs_services::discord::registrations::{
-                ApplicationCommand, InteractionKind, MessageComponent,
+            interactions::{
+                exports::wpbs_services::discord::interaction_handler,
+                wpbs_services::discord::interactions::{
+                    ApplicationCommand, InteractionKind, MessageComponent,
+                },
             },
-        },
 ```
 
 ## Registering the Button
 
 Registering a `MessageComponent` generates the custom ID Discord identifies it
-by. Like the command, the component stays registered when wpbs stops, so buttons
-sent before a restart keep working. Registering it again has no effect and keeps
-the custom ID:
+by. Like the command, it can be registered again: that has no effect and keeps
+the custom ID, so buttons sent earlier keep working:
 
 ```rust,name=greeter/src/discord.rs
 async fn register_button() -> anyhow::Result<()> {

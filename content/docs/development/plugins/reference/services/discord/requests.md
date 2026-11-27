@@ -3,11 +3,11 @@
 # Regenerate it with `python3 reference.py path/to/wit`, using the WIT files
 # from https://github.com/wpbs-rs/wit.
 title = "Requests"
-description = "The client interface."
+description = "The requests interface."
 weight = 3
 +++
 
-## Interface `client`
+## Interface `requests`
 
 Provides requests to Discord.
 
@@ -32,7 +32,7 @@ Returns an error if:
 - The request is rejected by Discord (`other`).
 
 ```wit
-interface client {
+interface requests {
     request: async func(request: request-data) -> result<json, host-error>;
 }
 ```
@@ -42,7 +42,7 @@ interface client {
 A request to Discord.
 
 ```wit
-interface client {
+interface requests {
     record request-data {
         route: route,
         body: option<body>,
@@ -56,7 +56,7 @@ interface client {
 A request body, either JSON or a multipart form.
 
 ```wit
-interface client {
+interface requests {
     variant body {
         json(json),
         form(form),
@@ -69,7 +69,7 @@ interface client {
 A multipart form body.
 
 ```wit
-interface client {
+interface requests {
     record form {
         boundary: list<u8, 15>,
         buffer: list<u8>,
@@ -84,7 +84,7 @@ A Discord HTTP route or gateway command and its parameters.
 Routes with a single ID or code take the one in their Discord path.
 
 ```wit
-interface client {
+interface requests {
     variant route {
         request-guild-members(snowflake),
         update-presence,
@@ -282,7 +282,7 @@ interface client {
 A reaction emoji, either a Unicode emoji or the ID of a custom emoji.
 
 ```wit
-interface client {
+interface requests {
     variant reaction {
         unicode(string),
         custom(snowflake),
@@ -295,7 +295,7 @@ interface client {
 Records for `route` cases that take more than one value.
 
 ```wit
-interface client {
+interface requests {
     record add-guild-member-params {
         guild-id: snowflake,
         user-id: snowflake,

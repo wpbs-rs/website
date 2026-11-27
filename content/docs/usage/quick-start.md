@@ -1,15 +1,16 @@
 +++
 title = "Quick Start"
-description = "Download wpbs and run a first project."
+description = "Install wpbs and run a first project."
 weight = 1
 +++
 
 ## Installation
 
-Install the latest release of wpbs for your system with its install script:
+Install the latest release of wpbs for your system with its install script. It
+also starts the daemon, `wpbsd`, as a system service:
 
 {% <tabs> %}
-{% <tab title="macOS/Linux"> %}
+{% <tab title="Linux/FreeBSD/macOS"> %}
 ```sh
 curl -fsSL https://raw.githubusercontent.com/wpbs-rs/wpbs/main/install.sh | sh
 ```
@@ -20,6 +21,12 @@ irm 'https://raw.githubusercontent.com/wpbs-rs/wpbs/main/install.ps1' | iex
 ```
 {% </tab> %}
 {% </tabs> %}
+
+Log out and in again, then check that the CLI reaches the daemon:
+
+```sh
+wpbs version
+```
 
 > [Installation](@/docs/usage/installation.md) covers other options, such as
 > Docker.
@@ -33,43 +40,61 @@ mkdir my-project
 cd my-project
 ```
 
-In it, add a `config.yaml` that runs `hello-world`, a plugin that logs
-`Hello, world!` when wpbs starts and `Goodbye, world!` when it stops:
+In it, add a `project.yaml` that runs `hello-world`, a plugin that logs
+`Hello, world!` when it starts and `Goodbye, world!` when it stops:
 
-```yaml,name=config.yaml
+```yaml,name=project.yaml
+name: my-project
+
 plugins:
   hello-world:
-    plugin: wpbs/hello-world:0.1.0
+    plugin: hello-world:0.1.0
 ```
 
 > [Configuration](@/docs/usage/configuration/_index.md) covers everything
-> `config.yaml` can describe, such as services and plugin settings.
+> `project.yaml` can describe, such as services and plugin settings.
 
 ## Running
 
-Start wpbs from the project's directory:
+From the project's directory, create the project in the daemon, and start it:
 
 ```sh
-wpbs
+wpbs new
+wpbs start
 ```
 
-On its first start, wpbs downloads the plugin, which then logs its greeting.
+The daemon downloads the plugin, which then logs its greeting. Follow the logs
+with:
 
-Stop wpbs with `Ctrl+C`, and the plugin says goodbye. Pressing `Ctrl+C` again
-forces wpbs to shut down without waiting for plugins to finish.
+```sh
+wpbs logs -f
+```
+
+Stop the project, and the plugin says goodbye:
+
+```sh
+wpbs stop
+```
 
 ## Data
 
-wpbs creates three directories in the directory it runs from:
+The daemon keeps every project, its plugins' data, and its logs in its data
+directory. Back it up; without it, every project starts from scratch.
 
-- `plugins`: Plugin files.
-- `database`: Plugin and service data. Keep it across updates and back it up;
-  without it, every plugin starts from scratch.
-- `logs`: Log files.
+| System  | Data directory        |
+| ------- | --------------------- |
+| Linux   | `/var/lib/wpbs`       |
+| FreeBSD | `/var/db/wpbs`        |
+| macOS   | `/usr/local/var/wpbs` |
+| Windows | `%ProgramData%\wpbs`  |
 
-Secrets, such as tokens, go in a `.env` file in that directory.
+A project keeps running when the daemon restarts, such as after a reboot or an
+update.
 
 ## Next Steps
 
-Replace `hello-world` with the services and plugins your project needs. Restart
-wpbs to apply configuration changes.
+Replace `hello-world` with the services and plugins your project needs, and run
+`wpbs update` after changing the file. That works whether the project runs or
+not; on a running project, only the plugins that changed restart.
+`wpbs restart` restarts the whole project, `wpbs ls` lists your projects, and
+`wpbs remove` removes this one with all its data.

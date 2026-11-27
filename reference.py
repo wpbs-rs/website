@@ -16,7 +16,7 @@ OUT = pathlib.Path(__file__).resolve().parent / "content/docs/development/plugin
 
 # Source directory, page path without extension, title, description, and weight.
 PACKAGES = [
-    ("core", "core", "Core", "Persistent storage, logging, and host and plugin lifecycle operations.", 1),
+    ("core", "core", "Core", "Persistent storage, logging, and project and plugin lifecycle operations.", 1),
     ("deps/wpbs-shared", "dependencies/shared", "Shared", "Shared payload and error types.", 1),
     ("deps/wasi-keyvalue", "dependencies/keyvalue", "Keyvalue", "Key-value stores, with atomic and batch operations.", 2),
     ("services/scheduler", "services/scheduler", "Scheduler", "Crons on cron expressions and one-shots at a point in time.", 1),
